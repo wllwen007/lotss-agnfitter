@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#PBS -j oe 
+#PBS -N B-af-samples
+
+echo ------------------------------------------------------
+echo -n 'Job is running on node(s) '; cat $PBS_NODEFILE
+echo ------------------------------------------------------
+echo PBS: qsub is running on $PBS_O_HOST
+echo PBS: originating queue is $PBS_O_QUEUE
+echo PBS: executing queue is $PBS_QUEUE
+echo PBS: job identifier is $PBS_JOBID
+echo PBS: job name is $PBS_JOBNAME
+echo PBS: ARRAYID = $PBS_ARRAYID
+echo ------------------------------------------------------
+echo
+
+### submit as
+## qsub -t 0-2 -v FIELD=EN1,NPER=50 -N agnf-EN1 run_agnfitter.qsub
+
+
+#FIELD=$1
+# NPER=50
+
+# submit with -v FIELD=ff
+echo FIELD is $FIELD
+echo NPER is $NPER
+cd /beegfs/lofar/wwilliams/lofar_surveys/deep/agnfitter
+
+#. ~/.bashrc
+
+#export PATH=/home/wwilliams/software/anaconda2/bin:/home/wwilliams/software/anaconda2/condabin:/usr/lib64/openmpi/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/dell/srvadmin/bin:/home/wwilliams/.local/bin/:/home/wwilliams/software/:/home/wwilliams/scripts/:/usr/local/maui/bin/:/soft/bin/:/soft/topcat/
+#export PATH=/beegfs/lofar/wwilliams/lofar_surveys/deep/AGNfitter/:$PATH
+#export PYTHONPATH=/usr/lib64/python2.7/site-packages/openmpi:/home/wwilliams/git/lf_sample/:/home/wwilliams/git/utils/:/home/wwilliams/git/lotss-catalogue/utils/:/home/wwilliams/python/:/home/wwilliams/python/face-cal-scripts/
+#PYTHONPATH=/usr/lib64/python2.7/site-packages/openmpi:/home/wwilliams/git/lf_sample/:/home/wwilliams/git/utils/:/home/wwilliams/git/lotss-catalogue/utils/:/home/wwilliams/software/anaconda3/lib/python3.7/site-packages/:/home/wwilliams/python/:/home/wwilliams/python/face-cal-scripts/
+#export PYTHONPATH=/home/wwilliams/software/anaconda3/lib/python3.7/site-packages/:$PYTHONPATH
+#export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/soft/boost/lib
+
+export PATH=/beegfs/lofar/wwilliams/lofar_surveys/deep/AGNfitter/:/home/wwilliams/software/anaconda3/bin:/home/wwilliams/software/anaconda3/condabin:/usr/lib64/openmpi/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/dell/srvadmin/bin:/home/wwilliams/.local/bin:/home/wwilliams/software:/home/wwilliams/scripts:/usr/local/maui/bin:/soft/bin:/soft/topcat
+export PYTHONPATH=/home/wwilliams/software/anaconda3/lib/python3.7/site-packages/
+
+which python
+#CMD="python run_subset_agnfitter.py --clobber --subset_ind=$PBS_ARRAYID --npersubset=$NPER ${FIELD}"
+CMD="python run_subset_agnfitter.py --subset_ind=$PBS_ARRAYID --npersubset=$NPER ${FIELD}"
+echo $CMD
+eval $CMD
